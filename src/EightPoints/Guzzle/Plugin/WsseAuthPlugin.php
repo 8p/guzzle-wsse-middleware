@@ -230,9 +230,22 @@ class WsseAuthPlugin implements EventSubscriberInterface {
         $request->addHeader('X-WSSE', sprintf('UsernameToken %s', implode(', ', $xwsse)));
     } // end: onRequestCreate()
 
-    public function generateDigest($nonce, $created, $password) {
+    /**
+     * Generate Digest
+     *
+     * @author  Florian Preusner
+     * @version 1.0
+     * @since   2013-10
+     *
+     * @param   string $nonce
+     * @param   string $createdAt
+     * @param   string $password
+     *
+     * @return  string
+     */
+    public function generateDigest($nonce, $createdAt, $password) {
 
-        return base64_encode(sha1(base64_decode($nonce) . $created . $password, true));
+        return base64_encode(sha1(base64_decode($nonce) . $createdAt . $password, true));
     } // end: generateDigest()
 
     /**
