@@ -13,13 +13,13 @@ Installation
 ------------
 Using composer:
 
-    ``` json
-    {
-        "require": {
-            "eightpoints/guzzle-wsse-plugin": "dev-master"
-        }
+``` json
+{
+    "require": {
+        "eightpoints/guzzle-wsse-plugin": "dev-master"
     }
-    ```
+}
+```
 
 Usage
 -----
