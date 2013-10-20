@@ -1,4 +1,3 @@
-guzzle-wsse-plugin
-==================
-
-WSSE Plugin for Guzzle
+Guzzle WSSE Plugin
+================================================
+@todo

@@ -1,0 +1,30 @@
+{
+    "name":        "eightpoints/guzzle-wsse-plugin",
+    "type":        "library",
+    "description": "WSSE Plugin for Guzzle, a PHP HTTP client library and framework for building RESTful web service clients",
+    "keywords":    ["wsse", "plugin", "framework", "http", "rest", "web service", "curl", "client", "HTTP client"],
+    "homepage":    "https://github.com/8p/guzzle-wsse-plugin",
+    "license":     "MIT",
+
+    "authors": [
+        {
+            "name":     "Florian Preusner",
+            "email":    "florian.preusner@8points.de",
+            "homepage": "https://github.com/floeHly"
+        },
+        {
+            "name":     "Community",
+            "homepage": "https://github.com/eightpoints/guzzle-wsse-plugin/contributors"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.3.3"
+    },
+
+    "autoload": {
+        "psr-0": {
+            "EightPoints\\Guzzle\\Plugin": "src"
+        }
+    }
+}
