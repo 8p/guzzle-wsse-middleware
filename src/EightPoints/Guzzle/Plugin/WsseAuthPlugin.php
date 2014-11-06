@@ -2,8 +2,8 @@
 
 namespace EightPoints\Guzzle\Plugin;
 
-use       Guzzle\Common\Event,
-          Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use       GuzzleHttp\Event\BeforeEvent,
+          GuzzleHttp\Event\SubscriberInterface;
 
 /**
  * Adds WSSE auth headers based on http://www.xml.com/pub/a/2003/12/17/dive.html
@@ -13,10 +13,10 @@ use       Guzzle\Common\Event,
  * @copyright 8points IT
  * @author    Florian Preusner
  *
- * @version   1.0
+ * @version   2.0
  * @since     2013-10
  */
-class WsseAuthPlugin implements EventSubscriberInterface {
+class WsseAuthPlugin implements SubscriberInterface {
 
     /**
      * @var string $username
@@ -62,7 +62,7 @@ class WsseAuthPlugin implements EventSubscriberInterface {
         $this->setPassword( $password);
         $this->setNonce(    $this->generateNonce());
         $this->setDigest(   $this->generateDigest($this->nonce, $this->createdAt, $this->password));
-    } // end: __construct
+    } // end: __construct()
 
     /**
      * Get Username
@@ -76,7 +76,7 @@ class WsseAuthPlugin implements EventSubscriberInterface {
     public function getUsername() {
 
         return $this->username;
-    } // end: getUsername
+    } // end: getUsername()
 
     /**
      * Set Username
@@ -91,7 +91,7 @@ class WsseAuthPlugin implements EventSubscriberInterface {
     public function setUsername($value) {
 
         $this->username = $value;
-    } // end: setUsername
+    } // end: setUsername()
 
     /**
      * Get Password
@@ -105,7 +105,7 @@ class WsseAuthPlugin implements EventSubscriberInterface {
     public function getPassword() {
 
         return $this->password;
-    } // end: getPassword
+    } // end: getPassword()
 
     /**
      * Set Password
@@ -120,7 +120,7 @@ class WsseAuthPlugin implements EventSubscriberInterface {
     public function setPassword($value) {
 
         $this->password = $value;
-    } // end: setPassword
+    } // end: setPassword()
 
     /**
      * Get created datetime
@@ -134,7 +134,7 @@ class WsseAuthPlugin implements EventSubscriberInterface {
     public function getCreatedAt() {
 
         return $this->createdAt;
-    } // end: getCreatedAt
+    } // end: getCreatedAt()
 
     /**
      * Get Nonce
@@ -148,7 +148,7 @@ class WsseAuthPlugin implements EventSubscriberInterface {
     public function getNonce() {
 
         return $this->nonce;
-    } // end: getNonce
+    } // end: getNonce()
 
     /**
      * Set Nonce
@@ -163,7 +163,7 @@ class WsseAuthPlugin implements EventSubscriberInterface {
     public function setNonce($value) {
 
         $this->nonce = $value;
-    } // end: setNonce
+    } // end: setNonce()
 
     /**
      * Get Digest
@@ -177,7 +177,7 @@ class WsseAuthPlugin implements EventSubscriberInterface {
     public function getDigest() {
 
         return $this->digest;
-    } // end: getDigest
+    } // end: getDigest()
 
     /**
      * Set Digest
@@ -191,34 +191,34 @@ class WsseAuthPlugin implements EventSubscriberInterface {
     public function setDigest($value) {
 
         $this->digest = $value;
-    } // end: setDigest
+    } // end: setDigest()
 
     /**
      * {@inheritdoc}
      *
      * @author  Florian Preusner
-     * @version 1.0
+     * @version 2.0
      * @since   2013-10
      */
-    public static function getSubscribedEvents() {
+    public function getEvents() {
 
-        return array('client.create_request' => 'onRequestCreate');
-    } // end: getSubscribedEvents
+        return ['before' => ['onBefore']];
+    } // end: getEvents
 
     /**
      * Add WSSE auth headers to Request
      *
      * @author  Florian Preusner
-     * @version 1.0
+     * @version 2.0
      * @since   2013-10
      *
-     * @param   Event $event
+     * @param   BeforeEvent $event
      *
      * @return  void
      */
-    public function onRequestCreate(Event $event) {
+    public function onBefore(BeforeEvent $event) {
 
-        $request = $event['request'];
+        $request = $event->getRequest();
         $xwsse   = array(
             sprintf('Username="%s"', $this->username),
             sprintf('PasswordDigest="%s"', $this->digest),
@@ -228,7 +228,7 @@ class WsseAuthPlugin implements EventSubscriberInterface {
 
         $request->addHeader('Authorization', 'WSSE profile="UsernameToken"');
         $request->addHeader('X-WSSE', sprintf('UsernameToken %s', implode(', ', $xwsse)));
-    } // end: onRequestCreate
+    } // end: onBefore()
 
     /**
      * Generate Digest
@@ -246,7 +246,7 @@ class WsseAuthPlugin implements EventSubscriberInterface {
     public function generateDigest($nonce, $createdAt, $password) {
 
         return base64_encode(sha1(base64_decode($nonce) . $createdAt . $password, true));
-    } // end: generateDigest
+    } // end: generateDigest()
 
     /**
      * Generate Nonce (number user once)
@@ -260,5 +260,5 @@ class WsseAuthPlugin implements EventSubscriberInterface {
     public function generateNonce() {
 
         return hash('sha512', uniqid(true));
-    } // end: generateNonce
+    } // end: generateNonce()
 } // end: WsseAuthPlugin
