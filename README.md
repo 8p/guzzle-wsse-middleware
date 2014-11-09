@@ -11,12 +11,12 @@ Requirements
  
 Installation
 ------------
-Using composer:
+Using [composer][3]:
 
 ``` json
 {
     "require": {
-        "eightpoints/guzzle-wsse-plugin": "dev-master"
+        "eightpoints/guzzle-wsse-plugin": "~2.0"
     }
 }
 ```
@@ -28,16 +28,16 @@ Usage
 
 $wsse   = new EightPoints\Guzzle\Plugin\WsseAuthPlugin("username", "password");
 $client = new Guzzle\Service\Client("http://example.com");
-$client->getEventDispatcher()->addSubscriber($wsse);
+$client->getEmitter()->attach($wsse);
 $response = $client->get("/someapi")->send();
 ```
 
 
 Authors
 -------
-Florian Preusner - <florian.preusner@8points.de> - <http://twitter.com/floeH> - <http://floeh.com><br />
+ - Florian Preusner ([Twitter][4])
 
-See also the list of [contributors][3] who participated in this project.
+See also the list of [contributors][5] who participated in this project.
 
 
 License
@@ -46,4 +46,6 @@ This plugin is licensed under the MIT License - see the LICENSE file for details
 
 [1]: http://www.xml.com/pub/a/2003/12/17/dive.html
 [2]: http://guzzlephp.org/
-[3]: https://github.com/8p/guzzle-wsse-plugin/contributors
+[3]: https://getcomposer.org/
+[4]: http://twitter.com/floeH
+[5]: https://github.com/8p/guzzle-wsse-plugin/contributors
