@@ -1,5 +1,5 @@
-README
-======
+Guzzle WSSE Plugin [![Latest Stable Version](https://poser.pugx.org/eightpoints/guzzle-wsse-plugin/v/stable.png)](https://packagist.org/packages/eightpoints/guzzle-wsse-plugin) [![Total Downloads](https://poser.pugx.org/eightpoints/guzzle-wsse-plugin/downloads.png)](https://packagist.org/packages/eightpoints/guzzle-wsse-plugin) [![License](https://poser.pugx.org/eightpoints/guzzle-wsse-plugin/license.svg)](https://packagist.org/packages/eightpoints/guzzle-wsse-plugin)
+==================
 This plugin integrates [WSSE][1] funtionality into Guzzle, a PHP framework for building RESTful web service clients.
 
 
