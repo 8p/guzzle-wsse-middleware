@@ -56,7 +56,7 @@ class WsseAuthPlugin implements SubscriberInterface {
      */
     public function __construct($username, $password) {
 
-        $this->createdAt = date('r');
+        $this->createdAt = date('c');
 
         $this->setUsername( $username);
         $this->setPassword( $password);
