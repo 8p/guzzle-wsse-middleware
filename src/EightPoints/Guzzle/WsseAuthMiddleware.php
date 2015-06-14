@@ -1,14 +1,13 @@
 <?php
 
-namespace EightPoints\Guzzle\Plugin;
+namespace EightPoints\Guzzle;
 
-use       GuzzleHttp\Event\BeforeEvent,
-          GuzzleHttp\Event\SubscriberInterface;
+use       Psr\Http\Message\RequestInterface;
 
 /**
  * Adds WSSE auth headers based on http://www.xml.com/pub/a/2003/12/17/dive.html
  *
- * @package   EightPoints\Guzzle\Plugin
+ * @package   EightPoints\Guzzle
  *
  * @copyright 8points IT
  * @author    Florian Preusner
@@ -16,7 +15,7 @@ use       GuzzleHttp\Event\BeforeEvent,
  * @version   2.0
  * @since     2013-10
  */
-class WsseAuthPlugin implements SubscriberInterface {
+class WsseAuthMiddleware {
 
     /**
      * @var string $username
@@ -194,41 +193,34 @@ class WsseAuthPlugin implements SubscriberInterface {
     } // end: setDigest()
 
     /**
-     * {@inheritdoc}
-     *
-     * @author  Florian Preusner
-     * @version 2.0
-     * @since   2013-10
-     */
-    public function getEvents() {
-
-        return ['before' => ['onBefore']];
-    } // end: getEvents
-
-    /**
      * Add WSSE auth headers to Request
      *
      * @author  Florian Preusner
-     * @version 2.0
-     * @since   2013-10
+     * @version 3.0
+     * @since   2015-06
      *
-     * @param   BeforeEvent $event
-     *
-     * @return  void
+     * @return  callable
      */
-    public function onBefore(BeforeEvent $event) {
+    public function attach() {
 
-        $request = $event->getRequest();
-        $xwsse   = array(
-            sprintf('Username="%s"', $this->username),
-            sprintf('PasswordDigest="%s"', $this->digest),
-            sprintf('Nonce="%s"', $this->nonce),
-            sprintf('Created="%s"', $this->createdAt)
-        );
+        return function (callable $handler) {
 
-        $request->addHeader('Authorization', 'WSSE profile="UsernameToken"');
-        $request->addHeader('X-WSSE', sprintf('UsernameToken %s', implode(', ', $xwsse)));
-    } // end: onBefore()
+            return function (RequestInterface $request, array $options) use ($handler) {
+
+                $xwsse = array(
+                    sprintf('Username="%s"',       $this->username),
+                    sprintf('PasswordDigest="%s"', $this->digest),
+                    sprintf('Nonce="%s"',          $this->nonce),
+                    sprintf('Created="%s"',        $this->createdAt)
+                );
+
+                $request = $request->withHeader('Authorization', 'WSSE profile="UsernameToken"');
+                $request = $request->withHeader('X-WSSE', sprintf('UsernameToken %s', implode(', ', $xwsse)));
+
+                return $handler($request, $options);
+            };
+        };
+    } // end: attach()
 
     /**
      * Generate Digest
@@ -261,4 +253,4 @@ class WsseAuthPlugin implements SubscriberInterface {
 
         return hash('sha512', uniqid(true));
     } // end: generateNonce()
-} // end: WsseAuthPlugin
+} // end: WsseAuthMiddleware

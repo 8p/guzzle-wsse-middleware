@@ -5,7 +5,7 @@ This plugin integrates [WSSE][1] funtionality into Guzzle, a PHP framework for b
 
 Requirements
 ------------
- - PHP 5.3.2 or above (at least 5.3.4 recommended to avoid potential bugs)
+ - PHP 5.5 or above
  - [Guzzle PHP Framework][2]
 
  
@@ -16,20 +16,25 @@ Using [composer][3]:
 ``` json
 {
     "require": {
-        "eightpoints/guzzle-wsse-plugin": "~2.0"
+        "eightpoints/guzzle-wsse-plugin": "~3.0"
     }
 }
 ```
+
 
 Usage
 -----
 ``` php
 <?php 
 
-$wsse   = new EightPoints\Guzzle\Plugin\WsseAuthPlugin("username", "password");
-$client = new Guzzle\Service\Client("http://example.com");
-$client->getEmitter()->attach($wsse);
-$response = $client->get("/someapi")->send();
+$wsse  = new \EightPoints\Guzzle\WsseAuthMiddleware($username, $password);
+$stack = \GuzzleHttp\HandlerStack::create();
+
+// Add the wsse middleware to the handler stack.
+$stack->push($wsse->attach());
+
+$client   = new \GuzzleHttp\Client(['handler' => $stack]);
+$response = $client->get('http://www.8points.de');
 ```
 
 
