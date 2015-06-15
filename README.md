@@ -1,4 +1,4 @@
-Guzzle WSSE Middleware [![Latest Stable Version](https://poser.pugx.org/eightpoints/guzzle-wsse-middleware/v/stable.png)](https://packagist.org/packages/eightpoints/guzzle-wsse-middleware) [![Total Downloads](https://poser.pugx.org/eightpoints/guzzle-wsse-middleware/downloads.png)](https://packagist.org/packages/eightpoints/guzzle-wsse-middleware) [![License](https://poser.pugx.org/eightpoints/guzzle-wsse-middleware/license.svg)](https://packagist.org/packages/eightpoints/guzzle-wsse-middleware)
+Guzzle WSSE Middleware<br />[![Latest Stable Version](https://poser.pugx.org/eightpoints/guzzle-wsse-middleware/v/stable.png)](https://packagist.org/packages/eightpoints/guzzle-wsse-middleware) [![Total Downloads](https://poser.pugx.org/eightpoints/guzzle-wsse-middleware/downloads.png)](https://packagist.org/packages/eightpoints/guzzle-wsse-middleware) [![License](https://poser.pugx.org/eightpoints/guzzle-wsse-middleware/license.svg)](https://packagist.org/packages/eightpoints/guzzle-wsse-middleware)
 ==================
 This middleware integrates [WSSE][1] funtionality into Guzzle, a PHP framework for building RESTful web service clients.
 
