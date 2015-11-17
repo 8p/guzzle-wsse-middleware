@@ -28,22 +28,6 @@ class WsseAuthMiddleware {
     private $password;
 
     /**
-     * @var string $createdAt
-     */
-    private $createdAt;
-
-    /**
-     * @var string $digest
-     */
-    private $digest;
-
-    /**
-     * @var string $nonce
-     */
-    private $nonce;
-
-
-    /**
      * Constructor
      *
      * @author  Florian Preusner
@@ -55,12 +39,8 @@ class WsseAuthMiddleware {
      */
     public function __construct($username, $password) {
 
-        $this->createdAt = date('c');
-
         $this->setUsername( $username);
         $this->setPassword( $password);
-        $this->setNonce(    $this->generateNonce());
-        $this->setDigest(   $this->generateDigest($this->nonce, $this->createdAt, $this->password));
     } // end: __construct()
 
     /**
@@ -122,77 +102,6 @@ class WsseAuthMiddleware {
     } // end: setPassword()
 
     /**
-     * Get created datetime
-     *
-     * @author  Florian Preusner
-     * @version 1.0
-     * @since   2013-10
-     *
-     * @return  string
-     */
-    public function getCreatedAt() {
-
-        return $this->createdAt;
-    } // end: getCreatedAt()
-
-    /**
-     * Get Nonce
-     *
-     * @author  Florian Preusner
-     * @version 1.0
-     * @since   2013-10
-     *
-     * @return  string $nonce
-     */
-    public function getNonce() {
-
-        return $this->nonce;
-    } // end: getNonce()
-
-    /**
-     * Set Nonce
-     *
-     * @author  Florian Preusner
-     * @version 1.0
-     * @since   2013-10
-     *
-     * @param   string $value
-     * @return  void
-     */
-    public function setNonce($value) {
-
-        $this->nonce = $value;
-    } // end: setNonce()
-
-    /**
-     * Get Digest
-     *
-     * @author  Florian Preusner
-     * @version 1.0
-     * @since   2013-10
-     *
-     * @return  string $digest
-     */
-    public function getDigest() {
-
-        return $this->digest;
-    } // end: getDigest()
-
-    /**
-     * Set Digest
-     *
-     * @author  Florian Preusner
-     * @version 1.0
-     * @since   2013-10
-     *
-     * @param   string $value
-     */
-    public function setDigest($value) {
-
-        $this->digest = $value;
-    } // end: setDigest()
-
-    /**
      * Add WSSE auth headers to Request
      *
      * @author  Florian Preusner
@@ -202,16 +111,18 @@ class WsseAuthMiddleware {
      * @return  callable
      */
     public function attach() {
-
         return function (callable $handler) {
 
             return function (RequestInterface $request, array $options) use ($handler) {
+                $createdAt = date('c');
+                $nonce = $this->generateNonce();
+                $digest = $this->generateDigest($nonce, $createdAt, $this->password);
 
                 $xwsse = array(
                     sprintf('Username="%s"',       $this->username),
-                    sprintf('PasswordDigest="%s"', $this->digest),
-                    sprintf('Nonce="%s"',          $this->nonce),
-                    sprintf('Created="%s"',        $this->createdAt)
+                    sprintf('PasswordDigest="%s"', $digest),
+                    sprintf('Nonce="%s"',          $nonce),
+                    sprintf('Created="%s"',        $createdAt)
                 );
 
                 $request = $request->withHeader('Authorization', 'WSSE profile="UsernameToken"');
