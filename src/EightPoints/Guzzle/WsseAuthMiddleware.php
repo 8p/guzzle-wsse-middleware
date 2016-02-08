@@ -162,6 +162,6 @@ class WsseAuthMiddleware {
      */
     public function generateNonce() {
 
-        return hash('sha512', uniqid(true));
+        return base64_encode(hash('sha512', uniqid(true)));
     } // end: generateNonce()
 } // end: WsseAuthMiddleware
