@@ -13,14 +13,19 @@ use Psr\Http\Message\RequestInterface;
 class WsseAuthMiddleware
 {
     /**
-     * @var string $username
+     * @var string
      */
-    private $username;
+    protected $username;
 
     /**
-     * @var string $password
+     * @var string
      */
-    private $password;
+    protected $password;
+
+    /**
+     * @var \DateTime
+     */
+    protected $createdAt;
 
     /**
      * @version 1.0
@@ -33,6 +38,8 @@ class WsseAuthMiddleware
     {
         $this->setUsername($username);
         $this->setPassword($password);
+
+        $this->createdAt = new \DateTime();
     }
 
     /**
@@ -82,6 +89,29 @@ class WsseAuthMiddleware
     }
 
     /**
+     * @version 4.1
+     * @since   2016-05
+     *
+     * @param  \DateTime $value
+     * @return void
+     */
+    public function setCreatedAt(\DateTime $value)
+    {
+        $this->createdAt = $value;
+    }
+
+    /**
+     * @version 4.1
+     * @since   2016-05
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
      * Add WSSE auth headers to Request
      *
      * @version 3.0
@@ -95,7 +125,8 @@ class WsseAuthMiddleware
         return function (callable $handler) {
 
             return function (RequestInterface $request, array $options) use ($handler) {
-                $createdAt = date('c');
+
+                $createdAt = $this->createdAt->format('c');
                 $nonce = $this->generateNonce();
                 $digest = $this->generateDigest($nonce, $createdAt, $this->password);
 
