@@ -16,7 +16,7 @@ Using [composer][3]:
 ``` json
 {
     "require": {
-        "eightpoints/guzzle-wsse-middleware": "~3.0"
+        "eightpoints/guzzle-wsse-middleware": "^4.1.1"
     }
 }
 ```
@@ -27,7 +27,12 @@ Usage
 ``` php
 <?php 
 
-$wsse  = new \EightPoints\Guzzle\WsseAuthMiddleware($username, $password);
+$wsse = new \EightPoints\Guzzle\WsseAuthMiddleware($username, $password);
+
+# optional: set createdAt (if not, current time will be used automatically)
+# useful if there is a small difference of time between client and server
+$wsse->setCreatedAt(new \DateTime('-10 seconds));
+
 $stack = \GuzzleHttp\HandlerStack::create();
 
 // Add the wsse middleware to the handler stack.
