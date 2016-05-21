@@ -2,6 +2,7 @@
 
 namespace EightPoints\Guzzle;
 
+use EightPoints\Guzzle\Util\GuidGenerator;
 use Psr\Http\Message\RequestInterface;
 
 /**
@@ -170,6 +171,8 @@ class WsseAuthMiddleware
      */
     public function generateNonce()
     {
-        return base64_encode(hash('sha512', uniqid(true)));
+        $uniqueId = GuidGenerator::generate();
+
+        return base64_encode(hash('sha512', $uniqueId));
     }
 }
