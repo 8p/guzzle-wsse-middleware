@@ -61,11 +61,13 @@ class WsseAuthMiddleware
      * @since   2013-10
      *
      * @param  string $value
-     * @return void
+     * @return \EightPoints\Guzzle\WsseAuthMiddleware
      */
     public function setUsername($value)
     {
         $this->username = $value;
+
+        return $this;
     }
 
     /**
@@ -84,11 +86,13 @@ class WsseAuthMiddleware
      * @since   2013-10
      *
      * @param  string $value
-     * @return void
+     * @return \EightPoints\Guzzle\WsseAuthMiddleware
      */
     public function setPassword($value)
     {
         $this->password = $value;
+
+        return $this;
     }
 
     /**
@@ -98,11 +102,14 @@ class WsseAuthMiddleware
      * @version 4.2
      * @since   2016-06
      *
-     * @param   string $value
+     * @param  string $value
+     * @return \EightPoints\Guzzle\WsseAuthMiddleware
      */
     public function setCreatedAtTimeExpression($value)
     {
         $this->createdAtTimeExpression = $value;
+
+        return $this;
     }
 
     /**
@@ -121,11 +128,13 @@ class WsseAuthMiddleware
      * @since   2016-05
      *
      * @param  \DateTime $value
-     * @return void
+     * @return \EightPoints\Guzzle\WsseAuthMiddleware
      */
     public function setCreatedAt(\DateTime $value)
     {
         $this->createdAt = $value;
+
+        return $this;
     }
 
     /**
