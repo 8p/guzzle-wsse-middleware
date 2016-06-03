@@ -28,6 +28,11 @@ class WsseAuthMiddleware
     protected $createdAt;
 
     /**
+     * @var string
+     */
+    protected $createdAtTimeExpression = '';
+
+    /**
      * @version 1.0
      * @since   2013-10
      *
@@ -38,8 +43,6 @@ class WsseAuthMiddleware
     {
         $this->setUsername($username);
         $this->setPassword($password);
-
-        $this->createdAt = new \DateTime();
     }
 
     /**
@@ -89,6 +92,31 @@ class WsseAuthMiddleware
     }
 
     /**
+     * Set relative time by using a expression
+     * http://php.net/manual/en/datetime.formats.relative.php
+     *
+     * @version 4.2
+     * @since   2016-06
+     *
+     * @param   string $value
+     */
+    public function setCreatedAtTimeExpression($value)
+    {
+        $this->createdAtTimeExpression = $value;
+    }
+
+    /**
+     * @version 4.2
+     * @since   2016-06
+     *
+     * @return string
+     */
+    public function getCreatedAtTimeExpression()
+    {
+        return $this->createdAtTimeExpression;
+    }
+
+    /**
      * @version 4.1
      * @since   2016-05
      *
@@ -108,6 +136,11 @@ class WsseAuthMiddleware
      */
     public function getCreatedAt()
     {
+        if (!$this->createdAt) {
+
+            return new \DateTime($this->createdAtTimeExpression);
+        }
+
         return $this->createdAt;
     }
 
@@ -126,7 +159,7 @@ class WsseAuthMiddleware
 
             return function (RequestInterface $request, array $options) use ($handler) {
 
-                $createdAt = $this->createdAt->format('c');
+                $createdAt = $this->getCreatedAt()->format('c');
                 $nonce = $this->generateNonce();
                 $digest = $this->generateDigest($nonce, $createdAt, $this->password);
 
