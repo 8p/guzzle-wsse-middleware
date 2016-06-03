@@ -92,6 +92,9 @@ class WsseAuthMiddleware
     }
 
     /**
+     * Set relative time by using a expression
+     * http://php.net/manual/en/datetime.formats.relative.php
+     *
      * @version 4.2
      * @since   2016-06
      *
