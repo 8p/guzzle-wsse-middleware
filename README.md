@@ -29,9 +29,10 @@ Usage
 
 $wsse = new \EightPoints\Guzzle\WsseAuthMiddleware($username, $password);
 
-# optional: set createdAt (if not, current time will be used automatically)
-# useful if there is a small difference of time between client and server
-$wsse->setCreatedAt(new \DateTime('-10 seconds));
+# Optional: Set createdAt by a expression (if not, current time will be used automatically)
+# Useful if there is a small difference of time between client and server
+# DateTime object will be regenerated for every request
+$wsse->setCreatedAtTimeExpression('-10 seconds');
 
 $stack = \GuzzleHttp\HandlerStack::create();
 
