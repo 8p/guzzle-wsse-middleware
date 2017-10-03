@@ -1,6 +1,6 @@
 <?php
 
-namespace EightPoints\Guzzle;
+namespace EightPoints\Bundle\GuzzleWsseBundle\Middleware;
 
 use Psr\Http\Message\RequestInterface;
 

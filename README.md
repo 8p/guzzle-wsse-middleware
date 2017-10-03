@@ -24,10 +24,18 @@ Using [composer][3]:
 
 Usage
 -----
+Load plugin in AppKernel.php:
+``` php
+new EightPoints\Bundle\GuzzleBundle\GuzzleBundle([
+    new EightPoints\Bundle\GuzzleWsseBundle\GuzzleWsseBundle(),
+])
+```
+
+
 ``` php
 <?php 
 
-$wsse = new \EightPoints\Guzzle\WsseAuthMiddleware($username, $password);
+$wsse = new \EightPoints\Bundle\GuzzleWsseBundle\GuzzleWsseBundle\Middleware\WsseAuthMiddleware($username, $password);
 
 # Optional: Set createdAt by a expression (if not, current time will be used automatically)
 # http://php.net/manual/en/datetime.formats.relative.php
