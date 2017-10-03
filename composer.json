@@ -19,13 +19,17 @@
     ],
 
     "require": {
-        "php":               ">=5.5",
-        "guzzlehttp/guzzle": ">=6.0"
+        "php":                          ">=7.0",
+        "guzzlehttp/guzzle":            ">=6.0",
+        "symfony/dependency-injection": "~2.3|~3.0",
+        "symfony/expression-language":  "~2.3|~3.0",
+        "symfony/http-kernel":          "~2.3|~3.0",
+        "symfony/config":               "~2.3|~3.0"
     },
 
     "autoload": {
-        "psr-0": {
-            "EightPoints\\Guzzle": "src"
+        "psr-4": {
+            "EightPoints\\Bundle\\GuzzleWsseBundle\\": "src"
         }
     }
 }
