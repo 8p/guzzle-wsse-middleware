@@ -61,7 +61,7 @@ class WsseAuthMiddleware
      * @since   2013-10
      *
      * @param  string $value
-     * @return \EightPoints\Guzzle\WsseAuthMiddleware
+     * @return WsseAuthMiddleware
      */
     public function setUsername($value)
     {
@@ -86,7 +86,7 @@ class WsseAuthMiddleware
      * @since   2013-10
      *
      * @param  string $value
-     * @return \EightPoints\Guzzle\WsseAuthMiddleware
+     * @return WsseAuthMiddleware
      */
     public function setPassword($value)
     {
@@ -103,7 +103,7 @@ class WsseAuthMiddleware
      * @since   2016-06
      *
      * @param  string $value
-     * @return \EightPoints\Guzzle\WsseAuthMiddleware
+     * @return WsseAuthMiddleware
      */
     public function setCreatedAtTimeExpression($value)
     {
@@ -128,7 +128,7 @@ class WsseAuthMiddleware
      * @since   2016-05
      *
      * @param  \DateTime $value
-     * @return \EightPoints\Guzzle\WsseAuthMiddleware
+     * @return WsseAuthMiddleware
      */
     public function setCreatedAt(\DateTime $value)
     {
@@ -146,7 +146,6 @@ class WsseAuthMiddleware
     public function getCreatedAt()
     {
         if (!$this->createdAt) {
-
             return new \DateTime($this->createdAtTimeExpression);
         }
 
@@ -172,12 +171,12 @@ class WsseAuthMiddleware
                 $nonce = $this->generateNonce();
                 $digest = $this->generateDigest($nonce, $createdAt, $this->password);
 
-                $xwsse = array(
+                $xwsse = [
                     sprintf('Username="%s"', $this->username),
                     sprintf('PasswordDigest="%s"', $digest),
                     sprintf('Nonce="%s"', $nonce),
                     sprintf('Created="%s"', $createdAt)
-                );
+                ];
 
                 $request = $request->withHeader('Authorization', 'WSSE profile="UsernameToken"');
                 $request = $request->withHeader('X-WSSE', sprintf('UsernameToken %s', implode(', ', $xwsse)));
@@ -197,7 +196,7 @@ class WsseAuthMiddleware
      *
      * @return string
      */
-    public function generateDigest($nonce, $createdAt, $password)
+    public function generateDigest($nonce, $createdAt, $password) : string
     {
         return base64_encode(sha1(base64_decode($nonce) . $createdAt . $password, true));
     }
@@ -210,7 +209,7 @@ class WsseAuthMiddleware
      *
      * @return string
      */
-    public function generateNonce()
+    public function generateNonce() : string
     {
         return base64_encode(hash('sha512', uniqid(true)));
     }
